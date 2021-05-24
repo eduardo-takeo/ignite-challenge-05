@@ -5,3 +5,41 @@
 }
 
 // TODO
+:root {
+  --white: #f8f8f8;
+  --black: #1a1d23;
+  --gray-300: #d7d7d7;
+  --gray-700: #bbbbbb;
+  --pink: #ff57b2;
+}
+
+@media screen and (max-width: 1080px) {
+  html {
+    font-size: 93.75%;
+  }
+}
+
+@media screen and (max-width: 720) {
+  html {
+    font-size: 87.5%;
+  }
+}
+
+html {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+body {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
