@@ -1,5 +1,6 @@
 import { GetStaticProps } from 'next';
 import Prismic from '@prismicio/client';
+import { FiCalendar, FiUser } from 'react-icons/fi';
 
 import { getPrismicClient } from '../services/prismic';
 
@@ -26,8 +27,28 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
-  // TODO
-  return <h1>Home</h1>;
+  const posts = postsPagination.results;
+
+  return (
+    <main className={commonStyles.content}>
+      {posts.map(post => (
+        <div key={post.uid} className={styles.post}>
+          <a href="http:">
+            <h1>{post.data.title}</h1>
+          </a>
+          <p>{post.data.subtitle}</p>
+          <span>
+            <FiCalendar style={{ marginRight: '10px' }} />
+            {post.first_publication_date}
+          </span>
+          <span>
+            <FiUser style={{ marginRight: '10px' }} />
+            {post.data.author}
+          </span>
+        </div>
+      ))}
+    </main>
+  );
 }
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -40,20 +61,22 @@ export const getStaticProps: GetStaticProps = async () => {
 
   const posts = postsResponse.results.map(post => {
     return {
-      next_page: postsResponse.next_page,
-      results: {
-        uid: post.uid,
-        first_publication_date: post.first_publication_date,
-        data: {
-          title: post.data.title,
-          subtitle: post.data.subtitle,
-          author: post.data.author,
-        },
+      uid: post.uid,
+      first_publication_date: post.first_publication_date,
+      data: {
+        title: post.data.title,
+        subtitle: post.data.subtitle,
+        author: post.data.author,
       },
     };
   });
 
+  const postsPagination = {
+    next_page: postsResponse.next_page,
+    results: posts,
+  };
+
   return {
-    props: { postsPagination: posts },
+    props: { postsPagination },
   };
 };
