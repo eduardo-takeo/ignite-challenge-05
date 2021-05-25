@@ -1,7 +1,8 @@
 import { GetStaticProps } from 'next';
 import Prismic from '@prismicio/client';
 import { FiCalendar, FiUser } from 'react-icons/fi';
-
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
 import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
@@ -62,7 +63,11 @@ export const getStaticProps: GetStaticProps = async () => {
   const posts = postsResponse.results.map(post => {
     return {
       uid: post.uid,
-      first_publication_date: post.first_publication_date,
+      first_publication_date: format(
+        new Date(post.first_publication_date),
+        "d 'de' MMM yyyy",
+        { locale: ptBR }
+      ),
       data: {
         title: post.data.title,
         subtitle: post.data.subtitle,
@@ -80,3 +85,5 @@ export const getStaticProps: GetStaticProps = async () => {
     props: { postsPagination },
   };
 };
+
+// TODO: Carregar mais posts
