@@ -34,9 +34,7 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
     <main className={commonStyles.content}>
       {posts.map(post => (
         <div key={post.uid} className={styles.post}>
-          <a href="http:">
-            <h1>{post.data.title}</h1>
-          </a>
+          <a href="http:">{post.data.title}</a>
           <p>{post.data.subtitle}</p>
           <span>
             <FiCalendar style={{ marginRight: '10px' }} />
