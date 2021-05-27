@@ -1,4 +1,5 @@
 import { GetStaticProps } from 'next';
+import Link from 'next/link';
 import Prismic from '@prismicio/client';
 import { FiCalendar, FiUser } from 'react-icons/fi';
 import { format } from 'date-fns';
@@ -34,7 +35,9 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
     <main className={commonStyles.content}>
       {posts.map(post => (
         <div key={post.uid} className={styles.post}>
-          <a href="http:">{post.data.title}</a>
+          <Link href={`/post/${post.uid}`}>
+            <a>{post.data.title}</a>
+          </Link>
           <p>{post.data.subtitle}</p>
           <span>
             <FiCalendar style={{ marginRight: '10px' }} />
