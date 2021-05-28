@@ -41,7 +41,9 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
           <p>{post.data.subtitle}</p>
           <span>
             <FiCalendar style={{ marginRight: '10px' }} />
-            {post.first_publication_date}
+            {format(new Date(post.first_publication_date), 'd MMM yyyy', {
+              locale: ptBR,
+            })}
           </span>
           <span>
             <FiUser style={{ marginRight: '10px' }} />
@@ -64,11 +66,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const posts = postsResponse.results.map(post => {
     return {
       uid: post.uid,
-      first_publication_date: format(
-        new Date(post.first_publication_date),
-        "d 'de' MMM yyyy",
-        { locale: ptBR }
-      ),
+      first_publication_date: post.first_publication_date,
       data: {
         title: post.data.title,
         subtitle: post.data.subtitle,
@@ -87,4 +85,5 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-// TODO: Carregar mais posts
+// TODO
+// - load more posts if available

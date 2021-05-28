@@ -38,7 +38,9 @@ export default function Post({ post }: PostProps): JSX.Element {
         <h1>{post.data.title}</h1>
         <span>
           <FiCalendar style={{ marginRight: '15px' }} />
-          {post.first_publication_date}
+          {format(new Date(post.first_publication_date), 'd MMM yyyy', {
+            locale: ptBR,
+          })}
         </span>
         <span>
           <FiUser style={{ marginRight: '15px' }} />
@@ -87,30 +89,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('posts', String(slug), {});
 
-  const content = response.data.content.map(section => {
-    return {
-      heading: section.heading,
-      body: section.body.map(subsection => {
-        return {
-          text: subsection.text,
-        };
-      }),
-    };
-  });
-
   const post = {
-    first_publication_date: format(
-      new Date(response.first_publication_date),
-      "d 'de' MMM yyyy",
-      { locale: ptBR }
-    ),
+    uid: response.uid,
+    first_publication_date: response.first_publication_date,
     data: {
       title: response.data.title,
+      subtitle: response.data.subtitle,
       banner: {
         url: response.data.banner.url,
       },
       author: response.data.author,
-      content,
+      content: response.data.content,
     },
   };
 
@@ -120,5 +109,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 // TODO:
-// - check getStaticPaths return
+// - display loader on fallback
 // - calculate reading time
