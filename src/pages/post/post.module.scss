@@ -1,1 +1,33 @@
-// TODO
+.articleContainer {
+  img {
+    width: 100%;
+    max-height: 40rem;
+  }
+}
+
+.articleContent {
+  h1 {
+    font-size: 3rem;
+  }
+
+  span {
+    display: inline-block;
+
+    & + span {
+      margin: 1rem 0 5rem 2rem;
+    }
+  }
+
+  section {
+    margin-bottom: 5rem;
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+  }
+}

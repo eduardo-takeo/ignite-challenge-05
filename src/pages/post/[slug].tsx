@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { RichText } from 'prismic-dom';
+import { FiCalendar, FiClock, FiUser } from 'react-icons/fi';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import Prismic from '@prismicio/client';
@@ -32,11 +32,24 @@ interface PostProps {
 
 export default function Post({ post }: PostProps): JSX.Element {
   return (
-    <main>
-      <article>
+    <main className={styles.articleContainer}>
+      <img src={post.data.banner.url} alt="Banner" />
+      <article className={`${commonStyles.content} ${styles.articleContent}`}>
+        <h1>{post.data.title}</h1>
+        <span>
+          <FiCalendar style={{ marginRight: '15px' }} />
+          {post.first_publication_date}
+        </span>
+        <span>
+          <FiUser style={{ marginRight: '15px' }} />
+          {post.data.author}
+        </span>
+        <span>
+          <FiClock style={{ marginRight: '15px' }} />4 min
+        </span>
         {post?.data.content.map(section => (
           <section key={section.heading}>
-            <h1>{section.heading}</h1>
+            <h2>{section.heading}</h2>
             {section.body.map(bodySection => (
               <p key={bodySection.text}>{bodySection.text}</p>
             ))}
@@ -63,7 +76,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
     };
   });
 
-  // TODO
   return {
     paths,
     fallback: true,
@@ -102,8 +114,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     },
   };
 
-  // TODO
   return {
     props: { post },
   };
 };
+
+// TODO:
+// - check getStaticPaths return
+// - calculate reading time
