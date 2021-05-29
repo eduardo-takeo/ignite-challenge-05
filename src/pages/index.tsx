@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import Prismic from '@prismicio/client';
@@ -29,7 +30,11 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
-  const posts = postsPagination.results;
+  const [posts, setPosts] = useState<Post[]>(postsPagination.results);
+
+  function loadMorePosts(): void {
+    // TODO
+  }
 
   return (
     <main className={commonStyles.content}>
@@ -51,6 +56,15 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
           </span>
         </div>
       ))}
+      {postsPagination.next_page && (
+        <button
+          type="button"
+          onClick={loadMorePosts}
+          className={styles.loadMoreButton}
+        >
+          Carregar mais posts
+        </button>
+      )}
     </main>
   );
 }

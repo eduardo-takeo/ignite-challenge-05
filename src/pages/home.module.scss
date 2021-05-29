@@ -27,3 +27,17 @@
     }
   }
 }
+
+.loadMoreButton {
+  margin-top: 3rem;
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--pink);
+  transition: filter 0.2s;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+}
