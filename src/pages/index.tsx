@@ -30,10 +30,21 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
+  const accessToken =
+    'MC5ZTEpQTnhBQUFDWUF3RGVh.Nn_vv73vv73vv70077-9bGBTE3_vv71e77-977-977-9U--_ve-_vS3vv70YaBfvv71VECM277-9Fw';
   const [posts, setPosts] = useState<Post[]>(postsPagination.results);
+  const [nextPage, setNextPage] = useState(postsPagination.next_page);
 
-  function loadMorePosts(): void {
-    // TODO
+  async function loadMorePosts(): Promise<any> {
+    const response = await fetch(
+      `${postsPagination.next_page}&access_token=${accessToken}`
+    )
+      .then(res => res.json())
+      .then(data => data);
+
+    const updatedPosts = [...posts, ...response.results];
+    setPosts(updatedPosts);
+    setNextPage(response.next_page);
   }
 
   return (
@@ -56,7 +67,7 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
           </span>
         </div>
       ))}
-      {postsPagination.next_page && (
+      {nextPage && (
         <button
           type="button"
           onClick={loadMorePosts}
@@ -98,6 +109,3 @@ export const getStaticProps: GetStaticProps = async () => {
     props: { postsPagination },
   };
 };
-
-// TODO
-// - load more posts if available
