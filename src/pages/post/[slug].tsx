@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { FiCalendar, FiClock, FiUser } from 'react-icons/fi';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
+import { RichText } from 'prismic-dom';
 import Prismic from '@prismicio/client';
 
 import { getPrismicClient } from '../../services/prismic';
@@ -42,6 +43,18 @@ export default function Post({ post }: PostProps): JSX.Element {
     );
   }
 
+  function calculateReadTime(): number {
+    const { content } = post.data;
+    const totalWords = content
+      .reduce((acc, value) => [...acc, RichText.asText(value.body)], [])
+      .join(' ')
+      .split(/\s+/).length;
+
+    const readTime = Math.ceil(totalWords / 200);
+
+    return readTime;
+  }
+
   return (
     <main className={styles.articleContainer}>
       <img src={post.data.banner.url} alt="Banner" />
@@ -58,7 +71,8 @@ export default function Post({ post }: PostProps): JSX.Element {
           {post.data.author}
         </span>
         <span>
-          <FiClock style={{ marginRight: '15px' }} />4 min
+          <FiClock style={{ marginRight: '15px' }} />
+          {calculateReadTime()} min
         </span>
         {post?.data.content.map(section => (
           <section key={section.heading}>
