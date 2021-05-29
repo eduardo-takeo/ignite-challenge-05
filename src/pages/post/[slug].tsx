@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
 import { FiCalendar, FiClock, FiUser } from 'react-icons/fi';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
@@ -31,6 +32,16 @@ interface PostProps {
 }
 
 export default function Post({ post }: PostProps): JSX.Element {
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return (
+      <div className={styles.loadingContainer}>
+        <h1>Carregando...</h1>
+      </div>
+    );
+  }
+
   return (
     <main className={styles.articleContainer}>
       <img src={post.data.banner.url} alt="Banner" />
@@ -109,5 +120,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 // TODO:
-// - display loader on fallback
 // - calculate reading time
